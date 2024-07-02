@@ -1,42 +1,42 @@
-import { Link } from "react-router-dom";
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+import { FaBars, FaTimes } from 'react-icons/fa';
+import SearchBar from '@/components/SearchBar';
+import CartWidget from '@/components/CartWidget';
 import logo from "../../assets/logo-cartoon-craze-red.png";
-import "../navigation/NavBar.css"
-import CartWidget from "./CartWidget";
 
-export default function NavBar(){
-    return(
-        <nav className="navbar navbar-expand-lg navbar-light">
-             <div className="container">
-             <Link to="/">
-             <img className="navbar-brand w-25" src={logo} alt="Logo" />
-             </Link>
-    <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-      <span className="navbar-toggler-icon"></span>
-    </button>
-    
-    <div className="collapse navbar-collapse" id="navbarNav">
-    <ul className="navbar-nav">
-      <li className="nav-item">
-      <a className="nav-link">
-                <Link className="nav-a" to={"/"}>Inicio</Link>
-            </a>
-            </li>
-          <li className="nav-item">
-          <a className="nav-link">
-          <Link className="nav-a" to={"/itemListContainer/simpson"}>Simpson</Link>
-            </a>
-            </li>
-          <li className="nav-item">
-            <a className="nav-link">
-            <Link className="nav-a" to={"/itemListContainer/futurama"}>Futurama</Link>
-            </a>
-            </li>
-            </ul>
-          <CartWidget/>
+export default function Navbar() {
+    const [isSideBarOpen, setIsSideBarOpen] = useState(false);
+
+    const toggleSideBar = () => {
+        setIsSideBarOpen(!isSideBarOpen);
+    };
+
+    return (
+        <nav className="flex items-center justify-between p-4 bg-slate-700 shadow-lg sticky top-0 z-10">
+            <div className="flex items-center space-x-4">
+                {isSideBarOpen ? (
+                    <FaTimes className="text-white cursor-pointer transform hover:scale-110 transition duration-500 ease-in-out" onClick={toggleSideBar} />
+                ) : (
+                    <FaBars className="text-white cursor-pointer transform hover:scale-110 transition duration-500 ease-in-out" onClick={toggleSideBar} />
+                )}
+                <Link to="/" className="cursor-pointer">
+                <img className="navbar-brand w-25" src={logo} alt="Logo" />
+                </Link>
+                <Link to="/" className="cursor-pointer">
+                    <span className="text-white font-lato-bold text-bold text-xl">CartoonCraze</span>
+                </Link>
             </div>
-
-
+            <div className="hidden lg:block w-1/2">
+                <SearchBar />
             </div>
+            <div className="flex items-center">
+                <CartWidget />
+                <Profile />
+            </div>
+            {isSideBarOpen && (
+                <SideBar toggleSideBar={toggleSideBar} />
+            )}
         </nav>
-    )
-}
+    );
+};
